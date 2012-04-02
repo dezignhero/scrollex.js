@@ -1,11 +1,13 @@
 /*
 
+Touchy.js
+by Alex Lea | alex@ifxstudios.com
+
 Requires Zepto.js or JQuery
 
-Usage: var scroller = new Touchy('.page');
-
-By Alex Lea
-alex@ifxstudios.com
+Usage: 
+var scroller = new Touchy(<element>);   // Vertical Scrolling
+var slider = new Touchy(<element>, { Slider : true });  // Horizontal Sliding
 
 */
 
