@@ -36,6 +36,25 @@ var Touchy = (function() {
 			}
 		}
 
+		// set defaults for mouse
+		this.StartEvent = "mousedown";
+		this.EndEvent = "mouseup";
+		this.MoveEvent = "mousemove";
+
+		try 
+		{ 
+			document.createEvent("TouchEvent"); 
+			this.CanTouch = true; 
+			// update events to use touch events, they are available
+			this.StartEvent = "touchstart";
+			this.EndEvent = "touchend";
+			this.MoveEvent = "touchmove";
+		} 
+		catch (e) //look for exception to feature-detection touch events.
+		{ 
+			this.CanTouch = false; 
+		}
+
 		// Global Variables
 		this.At = 0;  // current location
 		this.startX = 0;
@@ -56,9 +75,9 @@ var Touchy = (function() {
 		this.element.style.webkitTransform = 'translate3d(0,0,0)';
 
 		// Handlers
-		this.element.addEventListener("touchstart", function(e) { self.touchStart(e) }, false);
-		this.element.addEventListener("touchmove", function(e) { self.touchMove(e); }, false);
-		this.element.addEventListener("touchend", function(e) { self.touchEnd(e); }, false);
+		this.element.addEventListener(this.StartEvent, function(e) { self.touchStart(e) }, false);
+		this.element.addEventListener(this.MoveEvent, function(e) { self.touchMove(e); }, false);
+		this.element.addEventListener(this.EndEvent, function(e) { self.touchEnd(e); }, false);
 	}
 
 	// Methods

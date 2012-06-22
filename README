@@ -8,4 +8,4 @@ Usage:
 var scroller = new Touchy(<element>);   // Vertical Scrolling
 var slider = new Touchy(<element>, { Slider : true });  // Horizontal Sliding
 
-Touchy.js is a scroller for webkit browsers and PhoneGap applications to simulate the scrolling momentum of an iPhone.
+Touchy.js is a scroller for webkit browsers and PhoneGap applications to simulate the scrolling momentum of an iPhone.  It also supposed drag-scrolling.
