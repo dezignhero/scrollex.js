@@ -1,0 +1,11 @@
+Touchy.js by Alex Lea | alex@ifxstudios.com
+
+Requires Zepto.js or JQuery
+
+Target requirements: Parent must have set width/height.  Must only be one child element.
+
+Usage: 
+var scroller = new Touchy(<element>);   // Vertical Scrolling
+var slider = new Touchy(<element>, { Slider : true });  // Horizontal Sliding
+
+Touchy.js is a scroller for webkit browsers and PhoneGap applications to simulate the scrolling momentum of an iPhone.
