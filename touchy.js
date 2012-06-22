@@ -1,7 +1,7 @@
 /*
 
 Touchy.js
-by Alex Lea | alex@ifxstudios.com
+by Alex Lea
 
 Requires Zepto.js or JQuery
 
