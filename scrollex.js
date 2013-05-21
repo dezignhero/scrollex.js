@@ -1,6 +1,6 @@
 /*
 
-Touchy.js
+Scrollex.js
 by Alex Lea
 
 Requires Zepto.js or JQuery
