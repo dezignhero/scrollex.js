@@ -1,11 +1,16 @@
-Scrollex.js by Alex Lea
+# Scrollex.js
 
-Requires Zepto.js or JQuery
+**Requires jQuery/Zepto**
 
-Target requirements: Parent must have set width/height.  Must only be one child element.
+Momentum scroller for touch enabled devices.  Currently supports WebKit devices only.  [Check out the demo](http://dezignhero.github.io/scrollex.js/).
 
-Usage: 
-var scroller = new Scrollex(<element>);   // Vertical Scrolling
-var slider = new Scrollex(<element>, { Slider : true });  // Horizontal Sliding
+## Introduction
 
-Scrollex.js is a scroller for webkit browsers and PhoneGap applications to simulate the scrolling momentum of an iPhone.  It also supposed drag-scrolling.
+Scrollex.js is a scroller for webkit browsers and PhoneGap applications to simulate the scrolling momentum of an iPhone.  It also supposed drag-scrolling.  The goal is a quick and smooth swiping experience on modern browsers.  I took advantage of -webkit-transition and -webkit-transform: translate3d(x,0,0) to achieve this.  Translate3d is graphically accelerated, which is why it is smoother than using absolute positioning and left/right properties.
+
+## Features
+
+* Smooth scrolling momenum.
+* Swipe detection on mobile devices
+* Moderate Size
+* Configurable animating settings
