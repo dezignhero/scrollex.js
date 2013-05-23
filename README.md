@@ -10,7 +10,7 @@ Scrollex.js is a scroller for webkit browsers and PhoneGap applications to simul
 
 ## Features
 
-* Smooth scrolling momenum.
+* Smooth scrolling momentum.
 * Swipe detection on mobile devices
 * Moderate Size
 * Configurable animating settings
