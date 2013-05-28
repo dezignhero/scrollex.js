@@ -66,7 +66,7 @@ var Scrollex = function(selector, options) {
 	/*------- Handles -------*/
 	
 	var el = selector,
-		$parent = $(el);
+		$parent = $(selector);
 	
 	/*------- Methods -------*/
 
@@ -158,7 +158,7 @@ var Scrollex = function(selector, options) {
 			swipe.lastTime = e.timeStamp;
 		  
 		  	// Only move when vertical motion exceeds horizontal
-			if((Math.abs(swipe.delta) > 2 || Math.abs(ratio) > 3) && ((swipe.At + dY) > swipe.limitEnd)) {
+			if ( (Math.abs(swipe.delta) > 2 || Math.abs(ratio) > 3) && ((swipe.At + dY) > swipe.limitEnd) ) {
 		  		// Always run this so that hit the ends
 				swipe.scrollTo = keepInBounds(swipe.At + dY);
 		  		animate(swipe.scrollTo,'none');
