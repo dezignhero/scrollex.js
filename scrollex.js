@@ -21,20 +21,16 @@ var Scrollex = function(selector, options) {
 
 	// Swiping
 	var swipe = {
-		started : false,
 		startX : 0,
-		endX : 0,
 		startY : 0,
+		endX : 0,
 		endY : 0,
 		goTo : 0,
 		at : 0,
 		delta : 0,
 		lastTouch : 0,
 		lastTime : 0,
-		limitStart : 0,
-		limitEnd : 0,
-		// from swiper.js
-		strength : 0
+		limitEnd : 0
 	};
 
 	// Settings
@@ -124,6 +120,7 @@ var Scrollex = function(selector, options) {
 		  		animate(swipe.goTo, 'none');
 			}
 		}
+
 		e.preventDefault();
 	},
 
@@ -152,12 +149,12 @@ var Scrollex = function(selector, options) {
 		$element[0].style.webkitTransition = transition;
 
 		// Move the element
-		var dest = !swipe.vertical ? '0,'+scrollTo+'px' : scrollTo+'px,0';
+		var dest = swipe.vertical ? scrollTo+'px,0' : '0,'+scrollTo+'px';
 		$element[0].style.webkitTransform = 'translate3d('+dest+',0)';
 	},
 
 	redefineParent = function() {  // Won't work unless self.element is reattached since may be overwritten by new modal contents
-		swipe.limitEnd = (!settings.vertical) ? $element[0].parentNode.clientHeight - $element[0].clientHeight : $element[0].parentNode.clientWidth - $element[0].clientWidth;
+		swipe.limitEnd = settings.vertical ? $element[0].parentNode.clientWidth - $element[0].clientWidth : $element[0].parentNode.clientHeight - $element[0].clientHeight;
 		animate(0, 'none');
 	},
 
@@ -172,6 +169,7 @@ var Scrollex = function(selector, options) {
 
 	keepInBounds = function(dest, needDiff) {
 		var diff = 0;
+		
 		if (dest > 0 || dest < swipe.limitEnd ) {
 			if ( dest < 0 ) {
 				dest = swipe.limitEnd;
@@ -180,10 +178,8 @@ var Scrollex = function(selector, options) {
 			}
 			diff = dest - swipe.at;
 		}
-		if ( typeof needDiff != 'undefined' ) {
-			return [dest, diff];
-		}
-		return dest;
+
+		return (typeof needDiff != 'undefined') ? [dest, diff] : dest;
 	};
 
 	// Run initialization
