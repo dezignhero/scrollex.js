@@ -33,6 +33,7 @@ var Scrollex = function(selector, options) {
 
 	// Settings
 	var settings = {
+		width : 0,
 		ease : 1.5,
 		scrollScale : 500,
 		vertical : true,
@@ -53,6 +54,11 @@ var Scrollex = function(selector, options) {
 		// Merge settings
 		settings = $.extend(settings, options || {});
 
+		// Initialize width if set
+		if ( settings.width > 0 ) {
+			$element.width(settings.width);
+		}
+
 		// Initialize limit end
 		swipe.limitEnd = settings.vertical ? $element[0].parentNode.clientHeight-$element[0].clientHeight : $element[0].parentNode.clientWidth-$element[0].clientWidth;
 		
@@ -71,6 +77,16 @@ var Scrollex = function(selector, options) {
 		$element[0].addEventListener('mousedown', function(e) { touchStart(e); }, false);
 		$element[0].addEventListener('mousemove', function(e) { if (e.which==1) { touchMove(e); } }, false);
 		$element[0].addEventListener('mouseup', function(e) { touchEnd(e); }, false);
+
+		// Prevent anchor tags from getting in the way
+		$('a', el).on('touchstart click', function(){
+			return animating ? false : true;
+		});
+
+		// Prevent image dragging on getting in the way
+		$('img', el).on('dragstart', function(){
+			return false;
+		});
 	},
 
 	touchStart = function(e) {
@@ -173,7 +189,7 @@ var Scrollex = function(selector, options) {
 		} else if ( dest < swipe.limitEnd ) {
 			dest = swipe.limitEnd;
 		}
-		
+
 		return (typeof needDiff != 'undefined') ? [dest, dest-swipe.at] : dest;
 	};
 
