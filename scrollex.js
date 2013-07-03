@@ -8,9 +8,7 @@ Requires Zepto.js or JQuery
 Target requirements: Parent must have set width/height.  Must only be one child element.
 
 Usage: 
-var scroller = new Scrollex(<element>);   // Vertical Scrolling
-var slider = new Scrollex(<element>, { Slider : true });  // Horizontal Sliding
-
+var scroller = new Scrollex(<element>, {<settings>});
 */
 
 var Scrollex = function(selector, options) {
