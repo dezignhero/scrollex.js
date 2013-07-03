@@ -42,10 +42,10 @@ var Scrollex = function(selector, options) {
 		ease : 1.5,
 		scrollScale : 500,
 		vertical : true,
-		ScrollThreshold : 7,
-		ScrollScale : 500,  // pixels per second
-		AllowMomentum : true,
-		SwipeThreshold : 15
+		scrollThreshold : 7,
+		scrollScale : 500,  // pixels per second
+		allowMomentum : true,
+		swipeThreshold : 15
 	};
 
 	/*------- Handles -------*/
@@ -97,26 +97,7 @@ var Scrollex = function(selector, options) {
 			animating = false;
 		}
 		
-		swipe.at = getPosition();  // for touch movef
-	},
-
-	touchEnd = function(e) {
-		// Detect if is Swipe
-		var mag = Math.abs(swipe.delta); 
-		if ( mag > swipe.ScrollThreshold && settings.AllowMomentum ) {
-			// Animate to either end
-			var velocity = swipe.delta / (e.timeStamp-swipe.lastTime),
-				travel = velocity * swipe.ScrollScale,
-				move = keepInBounds(swipe.at+travel, true);
-
-			swipe.goTo = move[0];
-
-			var factor = (move[1] != 0) ? move[1]/travel : 1;
-			
-			// Add transition ease
-			animate(swipe.goTo, factor*settings.ease);
-			animating = true;
-		}
+		swipe.at = getPosition();  // for touch move
 	},
 
 	touchMove = function(e){
@@ -127,7 +108,7 @@ var Scrollex = function(selector, options) {
 			// Ensure Vertical Motion
 			var dX = pageX - swipe.startX,
 				dY = pageY - swipe.startY;
-			
+
 			// For detecting swipe
 			var touch = swipe.vertical ? pageX : pageY,
 				ratio = swipe.vertical ? dX/dY : dY/dX;
@@ -144,6 +125,25 @@ var Scrollex = function(selector, options) {
 			}
 		}
 		e.preventDefault();
+	},
+
+	touchEnd = function(e) {
+		// Detect if is Swipe
+		var mag = Math.abs(swipe.delta);
+		if ( mag > settings.scrollThreshold && settings.allowMomentum ) {
+			// Animate to either end
+			var velocity = swipe.delta / (e.timeStamp-swipe.lastTime),
+				travel = velocity * swipe.scrollScale,
+				move = keepInBounds(swipe.at+travel, true);
+
+			swipe.goTo = move[0];
+
+			var factor = (move[1] != 0) ? move[1]/travel : 1;
+			
+			// Add transition ease
+			animate(swipe.goTo, factor*settings.ease);
+			animating = true;
+		}
 	},
 
 	animate = function(scrollTo, ease) {
@@ -167,11 +167,7 @@ var Scrollex = function(selector, options) {
 			transform = new WebKitCSSMatrix(style.webkitTransform);
 
 		// Return position based on direction
-		if ( !settings.vertical ) {
-			return transform.m42;
-		} else {
-			return transform.m41;
-		}
+		return settings.vertical ? transform.m42 : transform.m41;
 	},
 
 	keepInBounds = function(dest, needDiff) {
