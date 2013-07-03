@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+<title>Scrollex.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+<style>
+* { margin: 0; padding: 0; }
+body { background: #eee; font-size: 12px; font-family: Arial; text-align: center; min-height: 480px; }
+.description { padding-top: 20px; font-size: 36px; color: #9c9c9c; border-top: 1px solid #fff; }
+
+.images { float: left; width: 100%; height: 100px; overflow: hidden; }
+	.images li { float: left; width: 100px; height: 100px; margin-right: 10px; background: #AEB8BF; list-style: none; color: #ddd; font-size: 32px; line-height: 100px; text-align: center; }
+
+.scrollWrap { margin: 0 auto; width: 600px; height: 480px; overflow: hidden; border: 1px solid #ddd; background: #ddd; overflow: hidden; }
+	.scrollThis { width: 1100px; }
+</style>
+</head>
+<body>
+<div class="scrollWrap">
+	<div class="scrollThis">
+		<ul class="images">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+	</div>
+</div>
+<div class="description">Scroll in Above Box</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="scrollex.js"></script>
+<script>
+	// Create Touchy.js instance
+	var scroller = new Scrollex('.scrollThis', { vertical : false });
+</script>
+</body>
+</html>

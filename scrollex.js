@@ -148,8 +148,8 @@ var Scrollex = function(selector, options) {
 		$element[0].style.webkitTransition = transition;
 
 		// Move the element
-		var dest = swipe.vertical ? scrollTo+'px,0' : '0,'+scrollTo+'px';
-		$element[0].style.webkitTransform = 'translate3d('+dest+',0)';
+		var moveTo = settings.vertical ? '0,'+scrollTo+'px' : scrollTo+'px,0';
+		$element[0].style.webkitTransform = 'translate3d('+moveTo+',0)';
 	},
 
 	redefineParent = function() {  // Won't work unless self.element is reattached since may be overwritten by new modal contents
@@ -166,19 +166,15 @@ var Scrollex = function(selector, options) {
 		return settings.vertical ? transform.m42 : transform.m41;
 	},
 
-	keepInBounds = function(dest, needDiff) {
-		var diff = 0;
-		
-		if (dest > 0 || dest < swipe.limitEnd ) {
-			if ( dest < 0 ) {
-				dest = swipe.limitEnd;
-			} else {
-				dest = 0;
-			}
-			diff = dest - swipe.at;
+	keepInBounds = function(dest, needDiff) {		
+		// This is actually when it goes out of bounds
+		if (dest > 0 ) {
+			dest = 0;
+		} else if ( dest < swipe.limitEnd ) {
+			dest = swipe.limitEnd;
 		}
-
-		return (typeof needDiff != 'undefined') ? [dest, diff] : dest;
+		
+		return (typeof needDiff != 'undefined') ? [dest, dest-swipe.at] : dest;
 	};
 
 	// Run initialization
