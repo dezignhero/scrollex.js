@@ -101,20 +101,21 @@ var Scrollex = function(selector, options) {
 
 			// Ensure Vertical Motion
 			var dX = pageX - swipe.startX,
-				dY = pageY - swipe.startY;
+				dY = pageY - swipe.startY,
+				moved = swipe.at + (settings.vertical ? dY : dX);
 
 			// For detecting swipe
-			var touch = swipe.vertical ? pageX : pageY,
-				ratio = swipe.vertical ? dX/dY : dY/dX;
+			var touch = settings.vertical ? pageY : pageX,
+				ratio = settings.vertical ? dY/dX : dX/dY;
 
 			swipe.delta = touch - swipe.lastTouch;
 			swipe.lastTouch = touch;
 			swipe.lastTime = e.timeStamp;
-		  
+
 		  	// Only move when vertical motion exceeds horizontal
-			if ( (Math.abs(swipe.delta) > 2 || Math.abs(ratio) > 3) && (swipe.at+dY > swipe.limitEnd) ) {
+			if ( (Math.abs(swipe.delta) > 2 || Math.abs(ratio) > 3) && moved > swipe.limitEnd ) {
 		  		// Always run this so that hit the ends
-				swipe.goTo = keepInBounds(swipe.at+dY);
+				swipe.goTo = keepInBounds(moved);
 		  		animate(swipe.goTo, 'none');
 			}
 		}
