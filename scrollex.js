@@ -133,7 +133,7 @@ var Scrollex = function(selector, options) {
 		if ( mag > settings.scrollThreshold && settings.allowMomentum ) {
 			// Animate to either end
 			var velocity = swipe.delta / (e.timeStamp-swipe.lastTime),
-				travel = velocity * swipe.scrollScale,
+				travel = velocity * settings.scrollScale,
 				move = keepInBounds(swipe.at+travel, true);
 
 			swipe.goTo = move[0];
