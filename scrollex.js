@@ -52,6 +52,9 @@ var Scrollex = function(selector, options) {
 	/*------- Methods -------*/
 
 	var init = function(options) {
+		// Exit if element doesn't exist
+		if ( $element.length == 0 ) return;
+
 		// Merge settings
 		settings = $.extend(settings, options || {});
 
@@ -112,7 +115,7 @@ var Scrollex = function(selector, options) {
 		swipe.startY = e.touches ? e.touches[0].pageY : e.pageY;
 		swipe.lastTouch = swipe.startY;  // prevents reverse momentum for quick touches
 
-		if ( animating == true ) {
+		if ( animating ) {
 			// Prevent links from activating
 			e.preventDefault();
 			
@@ -130,6 +133,7 @@ var Scrollex = function(selector, options) {
 
 	touchMove = function(e){
 		if ( !animating ) {
+
 			var pageX = e.touches ? e.touches[0].pageX : e.pageX,
 				pageY = e.touches ? e.touches[0].pageY : e.pageY;
 
@@ -215,7 +219,13 @@ var Scrollex = function(selector, options) {
 
 	// Public methods/properties
 	return {
+		element : $element,
 
+		animate : animate,
+
+		animating : function() {
+			return animating;
+		},
 	};
 
 }
