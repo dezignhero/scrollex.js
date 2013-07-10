@@ -117,7 +117,7 @@ var Scrollex = function(selector, options) {
 
 		swipe.startX = e.touches ? e.touches[0].pageX : e.pageX;
 		swipe.startY = e.touches ? e.touches[0].pageY : e.pageY;
-		swipe.lastTouch = swipe.startY;  // prevents reverse momentum for quick touches
+		swipe.lastTouch = settings.vertical ? swipe.startY : swipe.startX;  // prevents reverse momentum for quick touches
 
 		if ( animating ) {
 			// Prevent links from activating
@@ -166,20 +166,23 @@ var Scrollex = function(selector, options) {
 
 	touchEnd = function(e) {
 		swipe.started = false;
-		// Detect if is Swipe
-		var mag = Math.abs(swipe.delta);
-		if ( mag > settings.scrollThreshold && settings.allowMomentum ) {
-			// Animate to either end
-			var velocity = swipe.delta / (e.timeStamp-swipe.lastTime),
-				travel = velocity * settings.scrollScale,
-				move = keepInBounds(swipe.at+travel, true);
 
-			swipe.goTo = move[0];
+		if ( !animating ) {
+			// Detect if is Swipe
+			var mag = Math.abs(swipe.delta);
+			if ( mag > settings.scrollThreshold && settings.allowMomentum ) {
+				// Animate to either end
+				var velocity = swipe.delta / (e.timeStamp-swipe.lastTime),
+					travel = velocity * settings.scrollScale,
+					move = keepInBounds(swipe.at+travel, true);
 
-			var factor = (move[1] != 0) ? move[1]/travel : 1;
-			
-			// Add transition ease
-			animate(swipe.goTo, factor*settings.ease);
+				swipe.goTo = move[0];
+
+				var factor = (move[1] != 0) ? move[1]/travel : 1;
+				
+				// Add transition ease
+				animate(swipe.goTo, factor*settings.ease);
+			}
 		}
 	},
 
