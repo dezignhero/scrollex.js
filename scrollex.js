@@ -15,7 +15,8 @@ var Scrollex = function(selector, options) {
 
 	/*------- Globals -------*/
 
-	var animating = false;
+	var animating = false,
+		orientation = 0;
 
 	// Swiping
 	var swipe = {
@@ -87,6 +88,23 @@ var Scrollex = function(selector, options) {
 		$('img', el).on('dragstart', function(){
 			return false;
 		});
+
+		// Check if Android
+		var ua = navigator.userAgent.toLowerCase(),
+			isAndroid = ua.indexOf("android") > -1;
+
+		// Orientation Change
+		var supportsOrientationChange = "onorientationchange" in window,
+			orientationEvent = (supportsOrientationChange && !isAndroid) ? "orientationchange" : "resize";
+
+		// Listener for orientation changes
+		window.addEventListener(orientationEvent, function(){
+			// Prevent 'fake' orientation calls
+			if ( orientation != window.orientation ) {
+				orientation = window.orientation;
+				redefineParent();
+			}
+		}, false);
 	},
 
 	touchStart = function(e) {
@@ -154,7 +172,6 @@ var Scrollex = function(selector, options) {
 			
 			// Add transition ease
 			animate(swipe.goTo, factor*settings.ease);
-			animating = true;
 		}
 	},
 
@@ -169,7 +186,7 @@ var Scrollex = function(selector, options) {
 	},
 
 	redefineParent = function() {  // Won't work unless self.element is reattached since may be overwritten by new modal contents
-		swipe.limitEnd = settings.vertical ? $element[0].parentNode.clientWidth - $element[0].clientWidth : $element[0].parentNode.clientHeight - $element[0].clientHeight;
+		swipe.limitEnd = settings.vertical ? $element[0].parentNode.clientHeight-$element[0].clientHeight : $element[0].parentNode.clientWidth-$element[0].clientWidth;
 		animate(0, 'none');
 	},
 
@@ -200,5 +217,5 @@ var Scrollex = function(selector, options) {
 	return {
 
 	};
-  
+
 }
