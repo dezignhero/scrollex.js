@@ -20,6 +20,7 @@ var Scrollex = function(selector, options) {
 
 	// Swiping
 	var swipe = {
+		started : false,
 		startX : 0,
 		startY : 0,
 		endX : 0,
@@ -77,6 +78,7 @@ var Scrollex = function(selector, options) {
 		$element[0].addEventListener('touchstart', function(e) { touchStart(e); }, false);
 		$element[0].addEventListener('touchmove', function(e) { touchMove(e); }, false);
 		$element[0].addEventListener('touchend', function(e) { touchEnd(e); }, false);
+		$element[0].addEventListener('webkitTransitionEnd', function(e) { animating = false; }, false);
 		// Desktop
 		$element[0].addEventListener('mousedown', function(e) { touchStart(e); }, false);
 		$element[0].addEventListener('mousemove', function(e) { if (e.which==1) { touchMove(e); } }, false);
@@ -111,6 +113,8 @@ var Scrollex = function(selector, options) {
 	},
 
 	touchStart = function(e) {
+		swipe.started = true;
+
 		swipe.startX = e.touches ? e.touches[0].pageX : e.pageX;
 		swipe.startY = e.touches ? e.touches[0].pageY : e.pageY;
 		swipe.lastTouch = swipe.startY;  // prevents reverse momentum for quick touches
@@ -118,10 +122,10 @@ var Scrollex = function(selector, options) {
 		if ( animating ) {
 			// Prevent links from activating
 			e.preventDefault();
-			
+
 			// Stay at current point
 			swipe.goTo = getPosition();
-			animate(swipe.goTo,'none');
+			animate(swipe.goTo, 'none');
 			swipe.delta = 0;  // reset so doesn't continue scroll motion.
 
 			// Allow scrolling again
@@ -133,7 +137,6 @@ var Scrollex = function(selector, options) {
 
 	touchMove = function(e){
 		if ( !animating ) {
-
 			var pageX = e.touches ? e.touches[0].pageX : e.pageX,
 				pageY = e.touches ? e.touches[0].pageY : e.pageY;
 
@@ -150,11 +153,11 @@ var Scrollex = function(selector, options) {
 			swipe.lastTouch = touch;
 			swipe.lastTime = e.timeStamp;
 
-		  	// Only move when vertical motion exceeds horizontal
+			// Only move when vertical motion exceeds horizontal
 			if ( (Math.abs(swipe.delta) > 2 || Math.abs(ratio) > 3) && moved > swipe.limitEnd ) {
-		  		// Always run this so that hit the ends
+				// Always run this so that hit the ends
 				swipe.goTo = keepInBounds(moved);
-		  		animate(swipe.goTo, 'none');
+				animate(swipe.goTo, 'none');
 			}
 		}
 
@@ -162,6 +165,7 @@ var Scrollex = function(selector, options) {
 	},
 
 	touchEnd = function(e) {
+		swipe.started = false;
 		// Detect if is Swipe
 		var mag = Math.abs(swipe.delta);
 		if ( mag > settings.scrollThreshold && settings.allowMomentum ) {
@@ -181,7 +185,11 @@ var Scrollex = function(selector, options) {
 
 	animate = function(scrollTo, ease) {
 		// Momentum Effect or Not
-		var transition = ( ease != 'none' ) ? '-webkit-transform '+ease+'s cubic-bezier(0, 0, 0.45, 1)' : 'none';
+		var transition = 'none';
+		if ( ease != 'none' ) {
+			animating = true;
+			transition = '-webkit-transform '+ease+'s cubic-bezier(0, 0, 0.45, 1)';
+		}
 		$element[0].style.webkitTransition = transition;
 
 		// Move the element
@@ -191,6 +199,7 @@ var Scrollex = function(selector, options) {
 
 	redefineParent = function() {  // Won't work unless self.element is reattached since may be overwritten by new modal contents
 		swipe.limitEnd = settings.vertical ? $element[0].parentNode.clientHeight-$element[0].clientHeight : $element[0].parentNode.clientWidth-$element[0].clientWidth;
+		alert('resize');
 		animate(0, 'none');
 	},
 
@@ -224,7 +233,7 @@ var Scrollex = function(selector, options) {
 		animate : animate,
 
 		animating : function() {
-			return animating;
+			return animating || swipe.started;
 		},
 	};
 
