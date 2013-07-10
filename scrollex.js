@@ -202,7 +202,6 @@ var Scrollex = function(selector, options) {
 
 	redefineParent = function() {  // Won't work unless self.element is reattached since may be overwritten by new modal contents
 		swipe.limitEnd = settings.vertical ? $element[0].parentNode.clientHeight-$element[0].clientHeight : $element[0].parentNode.clientWidth-$element[0].clientWidth;
-		alert('resize');
 		animate(0, 'none');
 	},
 
