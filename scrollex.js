@@ -85,7 +85,7 @@ var Scrollex = function(selector, options) {
 		$element[0].addEventListener('mouseup', function(e) { touchEnd(e); }, false);
 
 		// Prevent anchor tags from getting in the way
-		$('a', el).on('touchstart click', function(){
+		$('a', el).on('tap click', function(){
 			return animating ? false : true;
 		});
 
