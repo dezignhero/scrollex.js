@@ -35,7 +35,7 @@ var Scrollex = function(selector, options) {
 
 	// Settings
 	var settings = {
-		width : 0,
+		length : 0,
 		ease : 1.5,
 		scrollScale : 500,
 		vertical : true,
@@ -60,8 +60,12 @@ var Scrollex = function(selector, options) {
 		settings = $.extend(settings, options || {});
 
 		// Initialize width if set
-		if ( settings.width > 0 ) {
-			$element.width(settings.width);
+		if ( settings.length > 0 ) {
+			if ( settings.vertical ) {
+				$element.height(settings.length);
+			} else {
+				$element.width(settings.length);
+			}
 		}
 
 		// Initialize limit end
