@@ -16,6 +16,7 @@ var Scrollex = function(selector, options) {
 	/*------- Globals -------*/
 
 	var animating = false,
+		timer,
 		orientation = 0;
 
 	// Swiping
@@ -194,9 +195,13 @@ var Scrollex = function(selector, options) {
 	animate = function(scrollTo, ease) {
 		// Momentum Effect or Not
 		var transition = 'none';
+		window.clearTimeout(timer);
 		if ( ease != 'none' ) {
 			animating = true;
 			transition = '-webkit-transform '+ease+'s cubic-bezier(0, 0, 0.45, 1)';
+			timer = window.setTimeout(function(){
+				animating = false;
+			}, ease*1000);
 		}
 		$element[0].style.webkitTransition = transition;
 
@@ -240,7 +245,7 @@ var Scrollex = function(selector, options) {
 		animate : animate,
 
 		animating : function() {
-			return animating || swipe.started;
+			return animating;
 		},
 	};
 
